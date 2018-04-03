@@ -10,7 +10,7 @@ def getMyStoreFile(){
     if("true".equals(IS_JENKINS)){
         return file("/data/zyn_key.keystore")
     }else{
-        return file("I:/个人/我的Android签名/zyn_key.keystore")
+        return file("/data/zyn_key.keystore")
     }
 }
 
