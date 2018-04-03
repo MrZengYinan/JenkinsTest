@@ -8,7 +8,7 @@ repositories {
 
 def getMyStoreFile(){
     if("true".equals(IS_JENKINS)){
-        return file("使用Jenkins打包时的证书路径")
+        return file("/data/zyn_key.keystore")
     }else{
         return file("I:/个人/我的Android签名/zyn_key.keystore")
     }
