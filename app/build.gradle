@@ -6,20 +6,12 @@ repositories {
     }
 }
 
-def getMyStoreFile(){
-    if("true".equals(IS_JENKINS)){
-        return file("/data/zyn_key.keystore")
-    }else{
-        return file("/data/zyn_key.keystore")
-    }
-}
-
 android {
     signingConfigs {
         release {
             keyAlias '测试签名'
             keyPassword '123456'
-            storeFile getMyStoreFile()
+            storeFile file("../zyn_key.keystore")
             storePassword '123456'
         }
     }
@@ -36,7 +28,6 @@ android {
         ndk {
             abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "mips", "mips64", "x86", "x86_64"
         }
-        // Enabling multidex support.
         multiDexEnabled true
     }
     buildTypes {
@@ -54,14 +45,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "JenkinsTest" + "-" + defaultConfig.versionName + "-" + BUILD_TYPE + ".apk"
+            outputFileName = "JenkinsTest" + "-" + defaultConfig.versionName + "-" + variant.buildType.name + ".apk"
         }
     }
+
     flavorDimensions("channel")
     productFlavors {
         yingyongbao { dimension "channel" }
+        xiaomi {dimension "channel"}
     }
     productFlavors.all {
         flavor -> flavor.manifestPlaceholders = [CHANNEL_VALUE: name]
@@ -78,7 +72,7 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
-    buildToolsVersion '27.0.3'
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 }
 
 dependencies {
